@@ -1,0 +1,102 @@
+def get_key(a):
+    for i,j in d.items():
+        if j==a:
+            return i
+
+def encrypt_caesar(text):
+    global d
+    d={'A':0,'B':1,'C':2,'D':3,'E':4,'F':5,'G':6,'H':7,'I':8,'J':9,'K':10,'L':11,'M':12,'N':13,'O':14,'P':15,'Q':16,'R':17,'S':18,'T':19,'U':20,'V':21,'W':22,'X':23,'Y':24,'Z':25}
+    ciphertext=''
+    num=0
+    for i in text:
+        if i in d:
+            num=d[i]+3
+            if num>25:
+                num-=26
+            key=get_key(num)
+            ciphertext+=key
+        else:
+            ciphertext+=i
+    print('Encrypted text is',ciphertext)
+    return ciphertext
+   
+def decrypt_caesar(dex):
+    plaintext=''
+    dnum=0
+    for i in dex:
+        if i in d:
+            dnum=d[i]-3
+            if dnum<0:
+                dnum+=26
+            dkey=get_key(dnum)
+            plaintext+=dkey
+        else:
+            plaintext+=i
+    print('The decrpted text is',plaintext)
+    return plaintext
+   
+def encrypt_vigenere(txt,kw):
+    global d
+    d={'A':0,'B':1,'C':2,'D':3,'E':4,'F':5,'G':6,'H':7,'I':8,'J':9,'K':10,'L':11,'M':12,'N':13,'O':14,'P':15,'Q':16,'R':17,'S':18,'T':19,'U':20,'V':21,'W':22,'X':23,'Y':24,'Z':25}
+   
+    length=len(txt)
+    cyph=''
+    num=0
+    klen=len(kw)
+    if length==klen:
+        pass
+    elif length>klen:
+        for i in range(length-klen):
+            kw+=kw[i]
+        print('The keyword used is',kw)
+    else:
+        return False
+    
+    for i in range(length):
+        if txt[i] in d:
+            num=d[txt[i]]+d[kw[i]]
+            if num>25:
+                num-=26
+            cyph+=get_key(num)
+        else:
+            cyph+=txt[i]
+    print('The encrypted text is',cyph)
+    return cyph,kw
+        
+    
+def decrypt_vigenere(v,k):
+    decrypt=''
+    num=0
+    for i in range(len(v)):
+        if v[i] in d:
+            num=d[v[i]]-d[k[i]]
+            if num<0:
+                num+=26
+            decrypt+=get_key(num)
+        else:
+            decrypt+=get_key(num)
+    print('The decrypted text is',decrypt)
+    return decrypt
+
+       
+print('The encryption begins!')
+value=input('Choose the type of encryption, caesar or vigenere. ')
+
+if value=='caesar':
+    plaintext=input('Enter the text to encrypt in capitals. ')
+    cyf=encrypt_caesar(plaintext)
+    ques=input('Need to decrypt the ciphertext? (Y or N) ')
+    if ques=='Y':
+        dplain=decrypt_caesar(cyf)
+    else:
+        pass
+   
+elif value=='vigenere':
+    plaintext=input('Enter the text to encrypt in capitals. ')
+    keyword=input('Enter the keyword in capitals. ')
+    val,key=encrypt_vigenere(plaintext,keyword)
+    ques=input('Need to decrypt the ciphertext? (Y or N) ')
+    if ques=='Y':
+        dplain=decrypt_vigenere(val,key)
+    else:
+        pass
